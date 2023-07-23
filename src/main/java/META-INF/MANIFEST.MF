@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Created-By: Maven Archiver 3.4.0
+Build-Jdk-Spec: 19
+Specification-Title: gRPC to Jakarta REST example
+Specification-Version: 1.0
+Specification-Vendor: JBoss by Red Hat
+Implementation-Title: gRPC to Jakarta REST example
+Implementation-Version: 1.0.1.Final-SNAPSHOT
+Implementation-Vendor: JBoss by Red Hat
+Implementation-URL: https://resteasy.dev/grpcToRest.example
+Java-Vendor: Oracle Corporation
+Java-Version: 19
+Os-Arch: x86_64
+Os-Name: Mac OS X
+Os-Version: 13.4.1
+Scm-Connection: scm:git:git://github.com/resteasy/resteasy-examples.git
+Scm-Revision: f45bf696296972f946dca444bf4afd47093363e5
+Scm-Url: https://github.com/resteasy/resteasy-examples/tree/main/
+

@@ -1,0 +1,14 @@
+JarIndex-Version: 1.0
+
+grpcToRest.example-1.0.1.Final-SNAPSHOT-sources.jar
+META-INF
+META-INF/maven
+META-INF/maven/dev.resteasy.examples
+META-INF/maven/dev.resteasy.examples/grpcToRest.example
+dev
+dev/resteasy
+dev/resteasy/example
+dev/resteasy/example/grpc
+dev/resteasy/example/grpc/greet
+GreetingTest
+

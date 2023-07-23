@@ -1,0 +1,104 @@
+syntax = "proto3";
+package org.greet;
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+option java_package = "org.greet";
+option java_outer_classname = "Greet_proto";
+
+service GreetService {
+// greet/{s} gEmpty dev_resteasy_example_grpc_greet___Greeting GET sync
+  rpc greet (GeneralEntityMessage) returns (GeneralReturnMessage);
+// salute/{s} gEmpty dev_resteasy_example_grpc_greet___GeneralGreeting GET sync
+  rpc generalGreet (GeneralEntityMessage) returns (GeneralReturnMessage);
+}
+
+message dev_resteasy_example_grpc_greet___Greeting {
+  string s = 1;
+}
+
+message dev_resteasy_example_grpc_greet___GeneralGreeting {
+  string salute = 1;
+  dev_resteasy_example_grpc_greet___Greeting greeting___super = 2;
+}
+
+message gEmpty {}
+message gInteger   {int32  value = 1;}
+message gFloat     {float  value = 1;}
+message gCharacter {string value = 1;}
+message gByte      {int32  value = 1;}
+message gLong      {int64  value = 1;}
+message gString    {string value = 1;}
+message gBoolean   {bool   value = 1;}
+message gDouble    {double value = 1;}
+message gShort     {int32  value = 1;}
+
+message gHeader {
+   repeated string values = 1;
+}
+
+message gCookie {
+   string name = 1;
+   string value = 2;
+   int32  version = 3;
+   string path = 4;
+   string domain = 5;
+}
+
+message gNewCookie {
+   string name = 1;
+   string value = 2;
+   int32  version = 3;
+   string path = 4;
+   string domain = 5;
+   string comment = 6;
+   int32 maxAge = 7;
+   google.protobuf.Timestamp expiry = 8;
+   bool secure = 9;
+   bool httpOnly = 10;
+
+   enum SameSite {
+      NONE   = 0;
+      LAX    = 1;
+      STRICT = 2;
+   }
+
+   SameSite sameSite = 11;
+}
+
+message ServletInfo {
+   string characterEncoding = 1;
+   string clientAddress = 2;
+   string clientHost = 3;
+   int32  clientPort = 4;
+}
+
+message FormValues {
+   repeated string formValues_field = 1;
+}
+
+message FormMap {
+   map<string, FormValues> formMap_field = 1;
+}
+
+message GeneralEntityMessage {
+   ServletInfo servletInfo = 1;
+   string URL = 2;
+   map<string, gHeader> headers = 3;
+   repeated gCookie cookies = 4;
+   string httpMethod = 5;
+   oneof messageType {
+      gEmpty gEmpty_field = 6;
+      FormMap form_field = 7;
+   }
+}
+
+message GeneralReturnMessage {
+   map<string, gHeader> headers = 1;
+   repeated gNewCookie cookies = 2;
+   gInteger status = 3;
+   oneof messageType {
+      dev_resteasy_example_grpc_greet___GeneralGreeting dev_resteasy_example_grpc_greet___GeneralGreeting_field = 4;
+      dev_resteasy_example_grpc_greet___Greeting dev_resteasy_example_grpc_greet___Greeting_field = 5;
+      gEmpty gEmpty_field = 6;
+   }
+}
