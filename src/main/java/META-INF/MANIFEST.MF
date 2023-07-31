@@ -9,11 +9,11 @@ Implementation-Version: 1.0.1.Final-SNAPSHOT
 Implementation-Vendor: JBoss by Red Hat
 Implementation-URL: https://resteasy.dev/grpcToRest.example
 Java-Vendor: Oracle Corporation
-Java-Version: 19
+Java-Version: 19.0.2
 Os-Arch: x86_64
 Os-Name: Mac OS X
 Os-Version: 13.4.1
 Scm-Connection: scm:git:git://github.com/resteasy/resteasy-examples.git
-Scm-Revision: 232d9578949681d387638e6afa69dfff8d6f5b86
+Scm-Revision: f45bf696296972f946dca444bf4afd47093363e5
 Scm-Url: https://github.com/resteasy/resteasy-examples/tree/main/
 

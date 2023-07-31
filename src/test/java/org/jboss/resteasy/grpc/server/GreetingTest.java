@@ -83,10 +83,13 @@ public class GreetingTest {
         GeneralEntityMessage gem = builder.setURL("http://localhost:xxx/greet/Bill").build();
         try {
             GeneralReturnMessage grm = blockingStub.greet(gem);
+            System.out.println("OK!!");
             dev_resteasy_example_grpc_greet___Greeting greeting = grm.getDevResteasyExampleGrpcGreetGreetingField();
             Assert.assertEquals("hello, Bill1", greeting.getS());
         } catch (StatusRuntimeException e) {
             //
+            System.out.println("ooops!!");
+            throw e;
         }
     }
 
