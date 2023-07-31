@@ -114,6 +114,7 @@
             <artifactId>grpc-bridge</artifactId>
             <version>${grpc-bridge.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
@@ -127,6 +128,11 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-api</artifactId>
+            <version>${io.grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-services</artifactId>
             <version>${io.grpc.version}</version>
         </dependency>
         <dependency>
@@ -162,7 +168,7 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty-shaded</artifactId>
-            <version>1.54.1</version>
+            <version>${io.grpc.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
