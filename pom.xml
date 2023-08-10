@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.resteasy.examples</groupId>
     <artifactId>grpcToRest.example.grpc</artifactId>
@@ -50,6 +51,11 @@
         <generate.prefix>Greet</generate.prefix>
         <resteasy.version>6.2.4.Final</resteasy.version>
         <grpc-bridge.version>1.0.0.Alpha2</grpc-bridge.version>
+        <version.wildfly-maven-plugin>4.2.0.Final</version.wildfly-maven-plugin>
+        <jboss.home>${project.build.directory}${file.separator}wildfly</jboss.home>
+        <version.org.wildfly>29.0.0.Final</version.org.wildfly>
+        <version.org.wildfly.grpc>0.1.2.Final</version.org.wildfly.grpc>
+
         <jars></jars>
         <classes></classes>
         <inWildFly>true</inWildFly>
@@ -308,7 +314,8 @@
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>dev.resteasy.grpc.bridge.generator.protobuf.JavabufTranslatorGenerator</mainClass>
+                            <mainClass>dev.resteasy.grpc.bridge.generator.protobuf.JavabufTranslatorGenerator
+                            </mainClass>
                             <cleanupDaemonThreads>false</cleanupDaemonThreads>
                             <arguments>
                                 <argument>${project.basedir}/target/generated-sources/protobuf/grpc-java</argument>
@@ -378,7 +385,8 @@
                         </goals>
                         <configuration>
                             <executable>${basedir}/src/main/resources/buildjar</executable>
-                            <commandlineArgs>dev.resteasy.examples grpcToRest.example.grpc 1.0.1.Final-SNAPSHOT</commandlineArgs>
+                            <commandlineArgs>dev.resteasy.examples grpcToRest.example.grpc 1.0.1.Final-SNAPSHOT
+                            </commandlineArgs>
                             <cleanupDaemonThreads>true</cleanupDaemonThreads>
                         </configuration>
                     </execution>
@@ -390,7 +398,9 @@
                         </goals>
                         <configuration>
                             <executable>${basedir}/src/main/resources/deployjar</executable>
-                            <commandlineArgs>dev.resteasy.examples grpcToRest.example.grpc 1.0.1.Final-SNAPSHOT ${release.type}</commandlineArgs>
+                            <commandlineArgs>dev.resteasy.examples grpcToRest.example.grpc 1.0.1.Final-SNAPSHOT
+                                ${release.type}
+                            </commandlineArgs>
                             <cleanupDaemonThreads>true</cleanupDaemonThreads>
                         </configuration>
                     </execution>
@@ -401,9 +411,12 @@
                 <artifactId>protobuf-maven-plugin</artifactId>
                 <version>${protobuf-maven-plugin.version}</version>
                 <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+                    <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}
+                    </protocArtifact>
                     <pluginId>grpc-java</pluginId>
-                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:${protoc-gen-grpc-java.version}:exe:${os.detected.classifier}</pluginArtifact>
+                    <pluginArtifact>
+                        io.grpc:protoc-gen-grpc-java:${protoc-gen-grpc-java.version}:exe:${os.detected.classifier}
+                    </pluginArtifact>
                     <clearOutputDirectory>false</clearOutputDirectory>
                 </configuration>
                 <executions>
@@ -449,12 +462,45 @@
                         <phase>package</phase>
                         <configuration>
                             <target name="chmod">
-                                <chmod file="${project.basedir}/src/main/resources/buildjar" perm="755" />
-                                <chmod file="${project.basedir}/src/main/resources/deployjar" perm="755" />
+                                <chmod file="${project.basedir}/src/main/resources/buildjar" perm="755"/>
+                                <chmod file="${project.basedir}/src/main/resources/deployjar" perm="755"/>
                             </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly-maven-plugin}</version>
+                <configuration>
+                    <jboss-home>${jboss.home}</jboss-home>
+                    <provisioning-dir>${jboss.home}</provisioning-dir>
+                    <feature-packs>
+                        <feature-pack>
+                            <groupId>org.wildfly</groupId>
+                            <artifactId>wildfly-ee-galleon-pack</artifactId>
+                            <version>${version.org.wildfly}</version>
+                        </feature-pack>
+                        <feature-pack>
+                            <groupId>org.wildfly.extras.grpc</groupId>
+                            <artifactId>wildfly-grpc-feature-pack</artifactId>
+                            <version>${version.org.wildfly.grpc}</version>
+                        </feature-pack>
+                    </feature-packs>
+                    <galleon-options>
+                        <jboss-fork-embedded>true</jboss-fork-embedded>
+                    </galleon-options>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>provision-server</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>provision</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -500,16 +546,16 @@
                             </webResources>
                             <failOnMissingWebXml>false</failOnMissingWebXml>
                             <packagingIncludes>
-                        WEB-INF/classes/**/*,
-                        WEB-INF/test-classes/**/*,
-                        META-INF/beans.xml,
-                        META-INF/MANIFEST.MF,
-                        WEB-INF/lib/grpc-bridge-runtime-1.0.0.Alpha2.jar,
-<!--                        WEB-INF/lib/grpc-services-1.55.1.jar,-->
-                     </packagingIncludes>
+                                WEB-INF/classes/**/*,
+                                WEB-INF/test-classes/**/*,
+                                META-INF/beans.xml,
+                                META-INF/MANIFEST.MF,
+                                WEB-INF/lib/grpc-bridge-runtime-1.0.0.Alpha2.jar,
+                                <!--                        WEB-INF/lib/grpc-services-1.55.1.jar,-->
+                            </packagingIncludes>
                             <packagingExcludes>
-                        WEB-INF/lib/*grpc-bridge-${resteasy.version}.jar,
-                     </packagingExcludes>
+                                WEB-INF/lib/*grpc-bridge-${resteasy.version}.jar,
+                            </packagingExcludes>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -547,16 +593,16 @@
                             </webResources>
                             <failOnMissingWebXml>false</failOnMissingWebXml>
                             <packagingIncludes>
-                        WEB-INF/lib/*grpc*,
-                        WEB-INF/lib/*guava*,
-                        WEB-INF/lib/perfmark*,
-                        WEB-INF/lib/*protobuf*,
-                        WEB-INF/classes/**/*,
-                        WEB-INF/test-classes/**/*
-                     </packagingIncludes>
+                                WEB-INF/lib/*grpc*,
+                                WEB-INF/lib/*guava*,
+                                WEB-INF/lib/perfmark*,
+                                WEB-INF/lib/*protobuf*,
+                                WEB-INF/classes/**/*,
+                                WEB-INF/test-classes/**/*
+                            </packagingIncludes>
                             <packagingExcludes>
-                        WEB-INF/lib/*grpc-bridge-${resteasy.version}.jar,
-                     </packagingExcludes>
+                                WEB-INF/lib/*grpc-bridge-${resteasy.version}.jar,
+                            </packagingExcludes>
                         </configuration>
                     </plugin>
                 </plugins>
