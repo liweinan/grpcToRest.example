@@ -45,31 +45,31 @@ public class GreetingTest {
     private static ManagedChannel channelPlaintext;
     private static GreetServiceBlockingStub blockingStub;
 
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-
-        // Use plaintext connection
-        try (ModelControllerClient client = ModelControllerClient.Factory.create("localhost", 9990)) {
-            final ModelNode handlerAddress = Operations.createAddress("subsystem", "grpc");
-            final ModelNode op = Operations.createWriteAttributeOperation(handlerAddress, "key-manager-name", "");
-            final ModelNode result = client.execute(op);
-            if (!Operations.isSuccessfulOutcome(result)) {
-                throw new RuntimeException("Failed to execute operation: " + op + " " +
-                        Operations.getFailureDescription(result).asString());
-            }
-        }
-
-        // Establish ServletContext
-        Client client = ClientBuilder.newClient();
-        String url = "http://localhost:8080/grpcToRest.example.grpc-1.0.1.Final-SNAPSHOT/grpcToJakartaRest/grpcserver/context";
-        Response response = client.target(url).request().get();
-        Assert.assertEquals(200, response.getStatus());
-        client.close();
-
-        // Create gRPC connection
-        channelPlaintext = ManagedChannelBuilder.forTarget("localhost:9555").usePlaintext().build();
-        blockingStub = GreetServiceGrpc.newBlockingStub(channelPlaintext);
-    }
+//    @BeforeClass
+//    public static void beforeClass() throws Exception {
+//
+//        // Use plaintext connection
+//        try (ModelControllerClient client = ModelControllerClient.Factory.create("localhost", 9990)) {
+//            final ModelNode handlerAddress = Operations.createAddress("subsystem", "grpc");
+//            final ModelNode op = Operations.createWriteAttributeOperation(handlerAddress, "key-manager-name", "");
+//            final ModelNode result = client.execute(op);
+//            if (!Operations.isSuccessfulOutcome(result)) {
+//                throw new RuntimeException("Failed to execute operation: " + op + " " +
+//                        Operations.getFailureDescription(result).asString());
+//            }
+//        }
+//
+//        // Establish ServletContext
+//        Client client = ClientBuilder.newClient();
+//        String url = "http://localhost:8080/grpcToRest.example.grpc-1.0.1.Final-SNAPSHOT/grpcToJakartaRest/grpcserver/context";
+//        Response response = client.target(url).request().get();
+//        Assert.assertEquals(200, response.getStatus());
+//        client.close();
+//
+//        // Create gRPC connection
+//        channelPlaintext = ManagedChannelBuilder.forTarget("localhost:9555").usePlaintext().build();
+//        blockingStub = GreetServiceGrpc.newBlockingStub(channelPlaintext);
+//    }
 
     @Test
     public void testGreeting() {
@@ -81,16 +81,10 @@ public class GreetingTest {
 
         GeneralEntityMessage.Builder builder = GeneralEntityMessage.newBuilder();
         GeneralEntityMessage gem = builder.setURL("http://localhost:xxx/greet/Bill").build();
-        try {
-            GeneralReturnMessage grm = blockingStub.greet(gem);
-            System.out.println("OK!!");
-            dev_resteasy_example_grpc_greet___Greeting greeting = grm.getDevResteasyExampleGrpcGreetGreetingField();
-            Assert.assertEquals("hello, Bill", greeting.getS());
-        } catch (StatusRuntimeException e) {
-            //
-            System.out.println("ooops!!");
-            throw e;
-        }
+        GeneralReturnMessage grm = blockingStub.greet(gem);
+        dev_resteasy_example_grpc_greet___Greeting greeting = grm.getDevResteasyExampleGrpcGreetGreetingField();
+        Assert.assertEquals("hello, Bill", greeting.getS());
+
     }
 
 //    @Test

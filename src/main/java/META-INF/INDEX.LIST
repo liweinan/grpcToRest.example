@@ -10,5 +10,4 @@ dev/resteasy
 dev/resteasy/example
 dev/resteasy/example/grpc
 dev/resteasy/example/grpc/greet
-GreetingTest
 
